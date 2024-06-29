@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import '../network/api_service.dart';
+import '../repository/medication_repository.dart';
 
 final getIt = GetIt.instance;
 
@@ -21,4 +22,8 @@ Future<void> setupServiceLocator() async {
   });
 
   getIt.registerLazySingleton<ApiService>(() => ApiService(getIt<Dio>()));
+
+  // repository
+  getIt.registerLazySingleton<MedicationRepository>(
+      () => MedicationRepositoryImpl(apiService: getIt<ApiService>()));
 }
