@@ -10,7 +10,7 @@ import '../repository/medication_repository.dart';
 
 final getIt = GetIt.instance;
 
-Future<void> setupServiceLocator() async {
+void setupServiceLocator() {
   // networking
   getIt.registerLazySingleton<Dio>(() {
     final dio = Dio();
@@ -26,10 +26,9 @@ Future<void> setupServiceLocator() async {
   getIt.registerLazySingleton<ApiService>(() => ApiService(getIt<Dio>()));
 
   // repository
-  getIt.registerLazySingleton<MedicationRepository>(
-      () => MedicationRepositoryImpl(
-            apiService: getIt<ApiService>(),
-            remedyMapper: RemedyMapper(),
-            adherenceMapper: AdherenceMapper(),
-          ));
+  getIt.registerFactory<MedicationRepository>(() => MedicationRepositoryImpl(
+        apiService: getIt<ApiService>(),
+        remedyMapper: RemedyMapper(),
+        adherenceMapper: AdherenceMapper(),
+      ));
 }
