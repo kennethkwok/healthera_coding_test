@@ -19,7 +19,7 @@ class AdherencesDto {
 @JsonSerializable()
 class AdherenceDto {
   @JsonKey(name: "_id")
-  final int? id;
+  final String? id;
 
   @JsonKey(name: "adherence_id")
   final String? adherenceId;

@@ -19,7 +19,6 @@ Map<String, dynamic> _$AdherencesDtoToJson(AdherencesDto instance) =>
     };
 
 AdherenceDto _$AdherenceDtoFromJson(Map<String, dynamic> json) => AdherenceDto(
-      id: (json['_id'] as num?)?.toInt(),
       adherenceId: json['adherence_id'] as String?,
       patientId: json['patient_id'] as String?,
       remedyId: json['remedy_id'] as String?,
@@ -33,7 +32,6 @@ AdherenceDto _$AdherenceDtoFromJson(Map<String, dynamic> json) => AdherenceDto(
 
 Map<String, dynamic> _$AdherenceDtoToJson(AdherenceDto instance) =>
     <String, dynamic>{
-      '_id': instance.id,
       'adherence_id': instance.adherenceId,
       'patient_id': instance.patientId,
       'remedy_id': instance.remedyId,

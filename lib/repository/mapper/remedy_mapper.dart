@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 import '../../network/model/remedies_dto.dart';
 import '../model/remedy.dart';
 import 'mapper_exception.dart';
@@ -60,6 +62,7 @@ class RemedyMapper {
             : null,
       );
     } catch (error) {
+      debugPrint("Error mapping RemedyDto to Remedy object: $error");
       throw MapperException<RemedyDto, Remedy>(error.toString());
     }
   }

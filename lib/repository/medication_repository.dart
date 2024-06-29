@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 import '../network/api_service.dart';
 import 'mapper/adherence_mapper.dart';
 import 'mapper/remedy_mapper.dart';
@@ -33,6 +35,7 @@ class MedicationRepositoryImpl implements MedicationRepository {
 
       return remedies;
     } catch (error) {
+      debugPrint("Error parsing remedies: $error");
       return Future.error(error);
     }
   }
@@ -48,6 +51,7 @@ class MedicationRepositoryImpl implements MedicationRepository {
 
       return adherences;
     } catch (error) {
+      debugPrint("Error parsing adherences: $error");
       return Future.error(error);
     }
   }

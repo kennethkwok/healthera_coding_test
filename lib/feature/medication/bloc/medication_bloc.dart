@@ -1,8 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../repository/medication_repository.dart';
-import '../../../repository/model/adherence.dart';
-import '../../../repository/model/remedy.dart';
+import '../model/list_item.dart';
 import 'medication_event.dart';
 import 'medication_state.dart';
 
@@ -19,19 +18,32 @@ class MedicationBloc extends Bloc<MedicationEvent, MedicationState> {
     LoadMedicationScreen event,
     Emitter<MedicationState> emit,
   ) async {
-    final adherences = await _medicationRepo.getAdherences();
-    final remedies = await _medicationRepo.getRemedies();
+    try {
+      final adherences = await _medicationRepo.getAdherences();
+      final remedies = await _medicationRepo.getRemedies();
 
-    final Map<Remedy, List<Adherence>> remedyMap = {};
+      final List<ListItem> items = [];
 
-    for (var remedy in remedies) {
-      final matchingAdherences = adherences
-          .where((adherence) => adherence.remedyId == remedy.remedyId)
-          .toList();
+      for (var remedy in remedies) {
+        final matchingAdherences = adherences
+            .where((adherence) => adherence.remedyId == remedy.remedyId)
+            .toList();
 
-      remedyMap[remedy] = matchingAdherences;
+        if (matchingAdherences.isNotEmpty) {
+          items
+            ..add(RemedyListItem(remedy))
+            ..addAll(matchingAdherences.map((e) => AdherenceListItem(e)))
+            ..add(SpacerItem());
+        } else {
+          items
+            ..add(RemedyListItem(remedy))
+            ..add(SpacerItem());
+        }
+      }
+
+      emit(DataLoadedMedicationState(items: items));
+    } catch (error) {
+      emit(ErrorMedicationState());
     }
-
-    emit(DataLoadedMedicationState(remedyMap: remedyMap));
   }
 }

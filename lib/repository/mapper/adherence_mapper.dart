@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import '../../network/model/adherences_dto.dart';
 import '../model/adherence.dart';
 import 'mapper_exception.dart';
@@ -14,6 +16,7 @@ class AdherenceMapper {
         doseQuantity: adherence.doseQuantity?.toInt(),
       );
     } catch (error) {
+      debugPrint("Error mapping AdherenceDto to Adherence object: $error");
       throw MapperException<AdherenceDto, Adherence>(error.toString());
     }
   }

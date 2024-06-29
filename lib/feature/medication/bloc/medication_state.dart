@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../repository/model/adherence.dart';
-import '../../../repository/model/remedy.dart';
+import '../model/list_item.dart';
 
 abstract class MedicationState extends Equatable {
   const MedicationState();
@@ -15,10 +14,10 @@ class InitialMedicationState extends MedicationState {}
 class ErrorMedicationState extends MedicationState {}
 
 class DataLoadedMedicationState extends MedicationState {
-  final Map<Remedy, List<Adherence>> remedyMap;
+  final List<ListItem> items;
 
-  const DataLoadedMedicationState({required this.remedyMap});
+  const DataLoadedMedicationState({required this.items});
 
   @override
-  List<Object> get props => [remedyMap];
+  List<Object> get props => [items];
 }

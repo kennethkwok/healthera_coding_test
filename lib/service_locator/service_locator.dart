@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
@@ -14,12 +16,31 @@ void setupServiceLocator() {
   // networking
   getIt.registerLazySingleton<Dio>(() {
     final dio = Dio();
-    dio.interceptors.add(PrettyDioLogger(
-      requestHeader: true,
-      requestBody: true,
-      responseBody: false,
-      logPrint: (o) => debugPrint(o.toString()),
-    ));
+
+    // Note: interceptorswrapper needed as endpoint response content-type is not application/json
+    dio.interceptors
+      ..add(PrettyDioLogger(
+        requestHeader: true,
+        requestBody: true,
+        responseBody: false,
+        logPrint: (o) => debugPrint(o.toString()),
+      ))
+      ..add(
+        InterceptorsWrapper(
+          onResponse: (Response response, ResponseInterceptorHandler handler) {
+            if (response.data is String) {
+              try {
+                String jsonStr = response.data;
+                response.data = json.decode(jsonStr);
+              } catch (e) {
+                debugPrint(
+                    'Error when trying to cast a string response data to json: $e');
+              }
+            }
+            handler.next(response);
+          },
+        ),
+      );
     return dio;
   });
 
