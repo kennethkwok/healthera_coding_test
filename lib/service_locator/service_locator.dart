@@ -4,6 +4,8 @@ import 'package:get_it/get_it.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import '../network/api_service.dart';
+import '../repository/mapper/adherence_mapper.dart';
+import '../repository/mapper/remedy_mapper.dart';
 import '../repository/medication_repository.dart';
 
 final getIt = GetIt.instance;
@@ -25,5 +27,9 @@ Future<void> setupServiceLocator() async {
 
   // repository
   getIt.registerLazySingleton<MedicationRepository>(
-      () => MedicationRepositoryImpl(apiService: getIt<ApiService>()));
+      () => MedicationRepositoryImpl(
+            apiService: getIt<ApiService>(),
+            remedyMapper: RemedyMapper(),
+            adherenceMapper: AdherenceMapper(),
+          ));
 }
